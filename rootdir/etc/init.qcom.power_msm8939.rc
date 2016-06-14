@@ -1,3 +1,10 @@
+on boot
+    # Update foreground and background cpusets
+    write /dev/cpuset/foreground/cpus 0-7
+    write /dev/cpuset/foreground/boost/cpus 0-3
+    write /dev/cpuset/background/cpus 4
+    write /dev/cpuset/system-background/cpus 4-7
+
 on enable-low-power
     write /proc/sys/kernel/sched_boost 1
 
@@ -25,7 +32,7 @@ on enable-low-power
 
     # Disable thermal core_control and cluster plug to update interactive gov settings
     write /sys/module/msm_thermal/core_control/enabled 0
-     write /sys/module/cluster_plug/parameters/active 0
+    write /sys/module/cluster_plug/parameters/active 0
 
     # Enable governor for perf cluster
     write /sys/devices/system/cpu/cpu0/online 1
@@ -91,12 +98,6 @@ on enable-low-power
 
     # Enable low power modes
     write /sys/module/lpm_levels/parameters/sleep_disabled 0
-
-    # Update foreground and background cpusets
-    write /dev/cpuset/foreground/cpus 0-7
-    write /dev/cpuset/foreground/boost/cpus 0-3
-    write /dev/cpuset/background/cpus 4
-    write /dev/cpuset/system-background/cpus 4-7
 
     # Per-process reclaim
     write /sys/module/process_reclaim/parameters/enable_process_reclaim 1
